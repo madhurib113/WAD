@@ -1,0 +1,53 @@
+package com.example.demo.model;
+
+public class TravelBooking {
+
+    public String destination;
+    public String travelDate;
+    public String hotelName;
+    public int availableSeats;
+    public double bookingPrice;
+
+    public TravelBooking(String destination, String travelDate,
+                         String hotelName, int availableSeats,
+                         double bookingPrice) {
+        this.destination = destination;
+        this.travelDate = travelDate;
+        this.hotelName = hotelName;
+        this.availableSeats = availableSeats;
+        this.bookingPrice = bookingPrice;
+    }
+}
+
+
+import com.example.demo.model.TravelBooking;
+import java.util.ArrayList;
+import java.util.List;
+
+@GetMapping("/travel-bookings")
+public List<TravelBooking> getTravelBookings() {
+
+    List<Event> events = eventRepository.findAll();
+    List<TravelBooking> result = new ArrayList<>();
+
+    for (Event e : events) {
+        result.add(new TravelBooking(
+            e.getName(),
+            e.getDate(),
+            e.getVenue(),
+            e.getCapacity(),
+            e.getTicketPrice()
+        ));
+    }
+
+    return result;
+}
+
+
+Method: GET
+
+
+
+URL: http://localhost:8080/api/events/travel-bookings
+
+
