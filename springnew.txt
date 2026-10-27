@@ -45,9 +45,70 @@ public List<TravelBooking> getTravelBookings() {
 
 
 Method: GET
-
-
-
 URL: http://localhost:8080/api/events/travel-bookings
 
 
+
+vue 
+
+const result = ref('')
+<script setup>
+function showResult() {
+  result.value =
+    'Event Name: TechFest\n' +
+    'Date: 2026-11-10\n' +
+    'Venue: Chennai\n' +
+    'Capacity: 100\n' +
+    'Ticket Price: 500'
+}
+
+<template>
+<h2>Event Details</h2>
+
+<button @click="showResult">Show Event Details</button>
+
+<pre v-if="result">{{ result }}</pre>
+
+
+
+
+
+
+const travelBookings = ref([])
+
+async function loadTravelBookings() {
+  try {
+    const res = await axios.get(
+      'http://localhost:8080/api/events/travel-bookings'
+    )
+
+    travelBookings.value = res.data
+  } catch (e) {
+    showError(e)
+  }
+}
+
+template
+<h2>Travel Bookings</h2>
+
+<button @click="loadTravelBookings">
+  Show Travel Bookings
+</button>
+
+<table v-if="travelBookings.length > 0">
+  <tr>
+    <th>Destination</th>
+    <th>Travel Date</th>
+    <th>Hotel</th>
+    <th>Available Seats</th>
+    <th>Booking Price</th>
+  </tr>
+
+  <tr v-for="b in travelBookings" :key="b.destination">
+    <td>{{ b.destination }}</td>
+    <td>{{ b.travelDate }}</td>
+    <td>{{ b.hotelName }}</td>
+    <td>{{ b.availableSeats }}</td>
+    <td>{{ b.bookingPrice }}</td>
+  </tr>
+</table>
